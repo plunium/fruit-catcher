@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-debug",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "src/*.cpp",
+                "-o",
+                "bin/debug/FruitCatcherGame",
+                "-IC:/SDL2/include",
+                "-Iinclude",
+                "-LC:/SDL2/lib",
+                "-w",
+                "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2",
+                "-lSDL2_image",
+                "-mconsole"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "build-release",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-O2",
+                "src/*.cpp",
+                "-o",
+                "bin/release/FruitCatcherGame",
+                "-IC:/SDL2/include",
+                "-Iinclude",
+                "-LC:/SDL2/lib",
+                "-w",
+                "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2",
+                "-lSDL2_image",
+                "-mwindows"
+            ],
+            "group": "build"
+        }
+    ]
+}
+
