@@ -23,39 +23,41 @@ SDL_Texture* gFruitTexture = nullptr;
 class Character {
 public:
     int x, y;
-    int direction; // 0 pour gauche et 1 pour droite
-    int velocity; 
+    bool keyLeft;
+    bool keyRight; 
 
-    Character() : x(0), y(0), direction(0), velocity(0) {}
+    // Ajout du constructeur de character 
+    Character() : x(0), y(0), keyLeft(false), keyRight(false) {}
 
     void handleEvent(SDL_Event& e) {
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
             switch (e.key.keysym.sym) {
             case SDLK_LEFT:
-                velocity = -5; // vélocité négative pour tourner à gauche
-                setDirection(0);
+                keyLeft = true;
                 break;
             case SDLK_RIGHT:
-                velocity = 5; // vélocité positive pour tourner à droite
-                setDirection(1);
+                keyRight = true;
                 break;
             }
         } else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
             switch (e.key.keysym.sym) {
                 case SDLK_LEFT:
+                    keyLeft = false;
+                    break;
                 case SDLK_RIGHT:
-                    velocity = 0; // lorsqu'on relâche la touche la vélocité est réinitialisée
+                    keyRight = false;
                     break;
             }
         }
     }
 
-    void setDirection(int dir) {
-        direction = dir;
-    }
 
     void update() {
-        x += velocity;
+       if (keyLeft && !keyRight) {
+        x -= 5;
+       } else if (keyRight && !keyLeft) {
+        x += 5;
+       }
 
         if (x < 0) {
             x = 0;
