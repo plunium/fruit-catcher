@@ -23,17 +23,44 @@ SDL_Texture* gFruitTexture = nullptr;
 class Character {
 public:
     int x, y;
+    int direction; // 0 pour gauche et 1 pour droite
+    int velocity; 
+
+    Character() : x(0), y(0), direction(0), velocity(0) {}
 
     void handleEvent(SDL_Event& e) {
         if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
             switch (e.key.keysym.sym) {
             case SDLK_LEFT:
-                x -= 10;
+                velocity = -5; // vélocité négative pour tourner à gauche
+                setDirection(0);
                 break;
             case SDLK_RIGHT:
-                x += 10;
+                velocity = 5; // vélocité positive pour tourner à droite
+                setDirection(1);
                 break;
             }
+        } else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+            switch (e.key.keysym.sym) {
+                case SDLK_LEFT:
+                case SDLK_RIGHT:
+                    velocity = 0; // lorsqu'on relâche la touche la vélocité est réinitialisée
+                    break;
+            }
+        }
+    }
+
+    void setDirection(int dir) {
+        direction = dir;
+    }
+
+    void update() {
+        x += velocity;
+
+        if (x < 0) {
+            x = 0;
+        } else if (x > SCREEN_WIDTH - CHARACTER_WIDTH) {
+            x = SCREEN_WIDTH - CHARACTER_WIDTH;
         }
     }
 
@@ -53,7 +80,7 @@ public:
     }
 
     void update() {
-        y += 5; // Speed of fruit falling
+        y += 5; // vitesse de chute des fruits
 
         if (y > SCREEN_HEIGHT) {
             resetPosition();
@@ -143,6 +170,8 @@ int SDL_main(int argc, char* argv[]) {
     bool quit = false;
 
     while (!quit) {
+
+        SDL_Event e;
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
@@ -151,6 +180,7 @@ int SDL_main(int argc, char* argv[]) {
             character.handleEvent(e);
         }
 
+        character.update();
         character.render();
 
         fruit.update();
