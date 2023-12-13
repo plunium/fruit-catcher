@@ -14,7 +14,7 @@ l'idée était de d'abord définir la fonction 'main' qui est le point d'entrée
 Dans le fichier main : 
 
 int main(int argc, char* argv[]) {
-    // ...
+    
 
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
@@ -49,7 +49,7 @@ public:
     int direction;
     int velocity;
 
-    // ...
+    
 };
 
 Fonctions de la classe "character" qui définissent le comportement du personnage et son rendu dans la fenêtre :
@@ -66,7 +66,7 @@ class Fruit {
 public:
     int x, y;
 
-    // ...
+    
 };
 
 Fonctions de la classe "fruit", ces fonctions définissent le comportement des fruits, notamment la réinitialisation de leur position, la mise à jour de leur position (pour simuler la chute), et leur rendu :
